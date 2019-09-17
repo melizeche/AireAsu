@@ -1,16 +1,19 @@
 # Ubuntu: apt install chromium-chromedriver
-# Arch/Manjaro: pacman -S chromium 
+# Arch/Manjaro: pacman -S chromium
 import time
 from selenium import webdriver
 from datetime import datetime
 from PIL import Image
 from pathlib import Path
 
-URL = "https://www.airvisual.com/air-quality-map?lat=-23.60066&lng=-58.23591&zoomLevel=7"
+URL = (
+    "https://www.airvisual.com/air-quality-map?lat=-23.60066&lng=-58.23591&zoomLevel=7"
+)
 
-SCREENSHOTS_DIR = Path.cwd().joinpath('screenshots')
+SCREENSHOTS_DIR = Path.cwd().joinpath("screenshots")
 if not SCREENSHOTS_DIR.exists():
     SCREENSHOTS_DIR.mkdir()
+
 
 def get_screenshot():
     # Headless Chrome/Selenium setup
@@ -27,7 +30,7 @@ def get_screenshot():
     print(screenshot_path)
     try:
         with webdriver.Chrome(options=options) as driver:
-            driver.set_window_size(1920,900)
+            driver.set_window_size(1920, 900)
             driver.get(URL)
             time.sleep(4)
             driver.save_screenshot(screenshot_path._str)
@@ -35,13 +38,14 @@ def get_screenshot():
         im = Image.open(screenshot_path)
         # Set box coordinates to crop (in pixels)
         left, top, right, bottom = 542, 0, 1346, 900
-        cropped_img = im.crop((left,top,right,bottom))
+        cropped_img = im.crop((left, top, right, bottom))
         cropped_img.save(screenshot_path)
     except Exception as e:
-        print(type(e),e)
-        return False
+        print(type(e), e)
+        return None
 
-    return True
+    return screenshot_path
 
-if __name__ == "__main__" :
+
+if __name__ == "__main__":
     get_screenshot()
