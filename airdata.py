@@ -1,5 +1,6 @@
 import tweepy
 import requests
+from datetime import datetime
 from bs4 import BeautifulSoup
 from screen import get_screenshot
 from config import ACCESS_TOKEN, ACCESS_TOKEN_SECRET, CONSUMER_KEY, CONSUMER_SECRET
@@ -15,26 +16,27 @@ class AirQuality:
         self.source = source
 
         if self.index < 51:
-            self.legend = "Bueno"
+            self.legend = "👍 Bueno"
             self.img = f"images/{self.source}0.png"
         elif self.index < 101:
-            self.legend = "Moderado"
+            self.legend = "😐 Moderado"
             self.img = f"images/{self.source}1.png"
         elif self.index < 151:
-            self.legend = "Insalubre para grupos sensibles"
+            self.legend = "⚠😷️ Insalubre para grupos sensibles"
             self.img = f"images/{self.source}2.png"
         elif self.index < 201:
-            self.legend = "Insalubre"
+            self.legend = "⚠😷‼️ Insalubre"
             self.img = f"images/{self.source}3.png"
         elif self.index < 301:
-            self.legend = "Muy Insalubre"
+            self.legend = "☣️☣️☣️ Muy Insalubre"
             self.img = f"images/{self.source}4.png"
         else:
-            self.legend = "Peligroso"
+            self.legend = "☠️☠️☠️ Peligroso"
             self.img = f"images/{self.source}5.png"
 
 
 def get_uca():
+    global updated
     soup = BeautifulSoup(
         requests.get(
             UCA_URL, timeout=10, headers={"user-agent": "Mozilla/5.0"}, verify=False
@@ -42,6 +44,7 @@ def get_uca():
         "html.parser",
     )
     ica_index = float(soup.find(class_="button white").text.split("(")[1].split(")")[0])
+    updated = soup.findAll("strong")[1].text
     return ica_index
 
 
@@ -61,12 +64,17 @@ def get_airvisual():
 def build_text():
     global uca
     global airvisual
-    text = f"""===TEST===\nÍndice de Calidad de Aire PM2,5:
+    global updated
+    text = f"""===Bot TEST===
+Índice de Calidad de Aire PM2,5:
 {uca.index} - {uca.legend} 
 {UCA_URL} 
+
 Air Quality Index US:
 {airvisual.index} - {airvisual.legend}
-{AIRVISUAL_URL}"""
+{AIRVISUAL_URL}
+
+Última actualización: {updated}"""
     return text
 
 
@@ -80,6 +88,7 @@ def tweet(msg, images=[]):
 
 
 if __name__ == "__main__":
+    updated=""
     uca = AirQuality(get_uca(), "uc")
     airvisual = AirQuality(get_airvisual(), "av")
     print(build_text())
