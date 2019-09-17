@@ -16,22 +16,22 @@ class AirQuality:
 
         if self.index < 51:
             self.legend = "Bueno"
-            self.img = f"{self.source}0.png"
+            self.img = f"images/{self.source}0.png"
         elif self.index < 101:
             self.legend = "Moderado"
-            self.img = f"{self.source}1.png"
+            self.img = f"images/{self.source}1.png"
         elif self.index < 151:
             self.legend = "Insalubre para grupos sensibles"
-            self.img = f"{self.source}2.png"
+            self.img = f"images/{self.source}2.png"
         elif self.index < 201:
             self.legend = "Insalubre"
-            self.img = f"{self.source}3.png"
+            self.img = f"images/{self.source}3.png"
         elif self.index < 301:
             self.legend = "Muy Insalubre"
-            self.img = f"{self.source}4.png"
+            self.img = f"images/{self.source}4.png"
         else:
             self.legend = "Peligroso"
-            self.img = f"{self.source}5.png"
+            self.img = f"images/{self.source}5.png"
 
 
 def get_uca():
@@ -42,9 +42,7 @@ def get_uca():
         "html.parser",
     )
     ica_index = float(soup.find(class_="button white").text.split("(")[1].split(")")[0])
-    ica_legend = soup.find(class_="button white").text.split("(")[0].strip()
-
-    return {"index": ica_index, "legend": ica_legend}
+    return ica_index
 
 
 def get_airvisual():
@@ -55,35 +53,38 @@ def get_airvisual():
         "html.parser",
     )
     aqi_index = float(soup.find(class_="aqi").contents[0])
-    aqi_legend = soup.find(class_="status-text").text
+   
 
-    return {"index": aqi_index, "legend": aqi_legend}
+    return aqi_index
 
 
 def build_text():
-    uca = get_uca()
-    airvisual = get_airvisual()
-    text = f"""Índice de Calidad de Aire PM2,5:
-{uca["index"]} - {uca["legend"]} 
+    global uca
+    global airvisual
+    text = f"""===TEST===\nÍndice de Calidad de Aire PM2,5:
+{uca.index} - {uca.legend} 
 {UCA_URL} 
 Air Quality Index US:
-{airvisual["index"]} - {airvisual["legend"]}
+{airvisual.index} - {airvisual.legend}
 {AIRVISUAL_URL}"""
     return text
 
 
-def tweet(msg):
+def tweet(msg, images=[]):
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
     api = tweepy.API(auth)
-    images = ("image1.png", "image2.png")
     media_ids = [api.media_upload(i).media_id_string for i in images]
     api.update_status(status=msg, media_ids=media_ids)
 
 
 if __name__ == "__main__":
-    # print(get_uca())
-    # print(get_airvisual())
+    uca = AirQuality(get_uca(), "uc")
+    airvisual = AirQuality(get_airvisual(), "av")
     print(build_text())
+    print(uca.img, airvisual.img)
+    map = get_screenshot()
+    print(map, type(map), map._str)
+    tweet(msg=build_text(), images=[map._str, uca.img, airvisual.img])
 
