@@ -16,22 +16,22 @@ class AirQuality:
 
         if self.index < 51:
             self.legend = "Bueno"
-            self.img = "0.png"
+            self.img = f"{self.source}0.png"
         elif self.index < 101:
             self.legend = "Moderado"
-            self.img = "1.png"
+            self.img = f"{self.source}1.png"
         elif self.index < 151:
             self.legend = "Insalubre para grupos sensibles"
-            self.img = "2.png"
+            self.img = f"{self.source}2.png"
         elif self.index < 201:
             self.legend = "Insalubre"
-            self.img = "3.png"
+            self.img = f"{self.source}3.png"
         elif self.index < 301:
             self.legend = "Muy Insalubre"
-            self.img = "4.png"
+            self.img = f"{self.source}4.png"
         else:
             self.legend = "Peligroso"
-            self.img = "5.png"
+            self.img = f"{self.source}5.png"
 
 
 def get_uca():
