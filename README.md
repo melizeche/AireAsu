@@ -23,12 +23,19 @@ sudo pacman -S chromium
 ## Install
 
 ```
-sudo apt install chromium-webdriver
 git clone git@github.com:melizeche/AireAsu.git
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
+python airdata.py
 ```
+### Crontab format and example
+
+MIN 	HOUR 	DAYofMONTH 	MONTH 	DAYofWEEK 	PYTHONPATH SCRIPT
+
+ For check and tweet  at 8:10am, 12:10pm and 6:10pm everyday
+
+```0      8,12,18    * * * /apps/AireAsu/env/bin/python /apps/AireAsu/airdata.py```
 
 ## Contributing
 
@@ -38,10 +45,15 @@ pip install -r requirements.txt
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
 
+## Disclaimer
+
+This project use public data from http://mediciones.aire.uc.edu.py and https://www.airvisual.com/paraguay/asuncion but is not asociated with any of them.
+
+
 ## Author
 
 * Marcelo Elizeche Landó https://github.com/melizeche
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.

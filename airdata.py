@@ -22,7 +22,7 @@ class AirQuality:
             self.legend = "😐 Moderado"
             self.img = f"images/{self.source}1.png"
         elif self.index < 151:
-            self.legend = "⚠😷️ Insalubre para grupos sensibles"
+            self.legend = "⚠😷️👶💔👴🤰 Insalubre para grupos sensibles"
             self.img = f"images/{self.source}2.png"
         elif self.index < 201:
             self.legend = "⚠😷‼️ Insalubre"
