@@ -66,6 +66,7 @@ def build_text():
     global airvisual
     global updated
     text = f"""===Bot TEST===
+#AireAsunción
 Índice de Calidad de Aire PM2,5:
 {uca.index} - {uca.legend} 
 {UCA_URL} 
@@ -78,22 +79,35 @@ Air Quality Index US:
     return text
 
 
-def tweet(msg, images=[]):
+def tweet(msg, images=[], reply_id=None):
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
     api = tweepy.API(auth)
     media_ids = [api.media_upload(i).media_id_string for i in images]
-    api.update_status(status=msg, media_ids=media_ids)
+    if reply_id:
+        result = api.update_status(status=msg, media_ids=media_ids, in_reply_to_status_id=reply_id)
+    else:
+        result = api.update_status(status=msg, media_ids=media_ids)
+    with open("last_tweet","w") as f:
+        f.write(result.id_str)
+    print(result.id_str)
+
 
 
 if __name__ == "__main__":
     updated=""
+    reply_id = None
     uca = AirQuality(get_uca(), "uc")
     airvisual = AirQuality(get_airvisual(), "av")
     print(build_text())
     print(uca.img, airvisual.img)
     map = get_screenshot()
     print(map, type(map), map._str)
-    tweet(msg=build_text(), images=[map._str, uca.img, airvisual.img])
+    try:
+        with open("last_tweet","r") as f:
+            reply_id = f.readline()
+    except:...
+
+    tweet(msg=build_text(), images=[map._str, uca.img, airvisual.img],reply_id=reply_id)
 
