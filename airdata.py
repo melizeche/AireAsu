@@ -14,20 +14,24 @@ class AirQuality:
         self.index = an_index
         self.source = source
 
-    @property
-    def legend(self):
         if self.index < 51:
-            return "Bueno"
+            self.legend = "Bueno"
+            self.img = "0.png"
         elif self.index < 101:
-            return "Moderado"
+            self.legend = "Moderado"
+            self.img = "1.png"
         elif self.index < 151:
-            return "Insalubre para grupos sensibles"
+            self.legend = "Insalubre para grupos sensibles"
+            self.img = "2.png"
         elif self.index < 201:
-            return "Insalubre"
+            self.legend = "Insalubre"
+            self.img = "3.png"
         elif self.index < 301:
-            return "Muy Insalubre"
+            self.legend = "Muy Insalubre"
+            self.img = "4.png"
         else:
-            return "Peligroso"
+            self.legend = "Peligroso"
+            self.img = "5.png"
 
 
 def get_uca():
