@@ -65,8 +65,9 @@ def build_text():
     global uca
     global airvisual
     global updated
-    text = f"""===Bot TEST===
+    text = f"""===AireAsu Bot===
 #AireAsunción
+
 Índice de Calidad de Aire PM2,5:
 {uca.index} - {uca.legend} 
 {UCA_URL} 
