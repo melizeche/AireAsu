@@ -64,7 +64,8 @@ def get_airvisual():
 def build_text():
     global uca
     global airvisual
-    global updated
+    #global updated #meanwhile mediciones UC is not updating
+    updated = datetime.now().strftime("%d/%b/%Y, %H:%M")
     text = f"""===AireAsu Bot===
 #AireAsunción
 
