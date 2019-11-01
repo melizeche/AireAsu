@@ -70,14 +70,14 @@ def build_text():
 #AireAsunción
 
 Índice de Calidad de Aire PM2,5:
-{uca.index} - {uca.legend} 
-{UCA_URL} 
+{uca.index} - {uca.legend}
+{UCA_URL}
 
 Air Quality Index US:
 {airvisual.index} - {airvisual.legend}
 {AIRVISUAL_URL}
 
-Última actualización: {updated}"""
+{updated}"""
     return text
 
 
@@ -111,5 +111,5 @@ if __name__ == "__main__":
             reply_id = f.readline()
     except:...
 
-    tweet(msg=build_text(), images=[map._str, uca.img, airvisual.img],reply_id=reply_id)
+    tweet(msg=build_text(), images=[map._str, uca.img, airvisual.img])
 
